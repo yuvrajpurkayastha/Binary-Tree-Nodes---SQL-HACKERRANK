@@ -1,0 +1,18 @@
+Binary Tree Nodes
+
+SELECT N, Type FROM (
+SELECT N, CASE WHEN P IS NULL THEN 'Root' END AS Type FROM BST
+GROUP BY Type,N HAVING Type IS NOT NULL
+
+UNION
+
+SELECT DISTINCT P, 'Inner' AS Type FROM BST Where P IS NOT NULL AND P < 15
+
+UNION
+
+SELECT N, 'Leaf' As Type FROM BST
+LEFT JOIN (SELECT P FROM BST) AS distinct_values
+ON BST.N = distinct_values.P
+WHERE distinct_values.P IS NULL
+) AS T1
+ORDER BY N
